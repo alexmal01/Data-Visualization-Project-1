@@ -2,6 +2,8 @@ library(dplyr)
 library(ggplot2)
 library(tidyr)
 library(stringr)
+library(scales)
+
 
 totalBitcoinConsumption <- read.csv("exportNew.csv")
 totalBitcoinConsumption %>% 
@@ -52,9 +54,51 @@ consumption1 <-
 
 consumption1
 
+
+BTCprice <- 
+  BTCprice %>% 
+  select(-Date)
+
+totalBitcoinConsumption<- 
+  totalBitcoinConsumption %>% 
+  select(-Date, -DateFormated2) %>% 
+  rename(DateFormatted = DateFormattedNew)
+
+totalBitcoinConsumption<- 
+  totalBitcoinConsumption %>% 
+  rename(DateFormatted = DateFormattedNew)
+
+str(totalBitcoinConsumption)
+
 BTC_consumption_price <- 
-  inner_join(BTCprice, totalBitcoinConsumption, by = c("DateFormatted", "DateFormattedNew"))
+  inner_join(BTCprice, totalBitcoinConsumption)
+
+BTC_consumption_price2 <- 
+  BTC_consumption_price %>% 
+  mutate(adjPrice = meanPrice/5000)
+
+
+
+consAndPrice1 <- 
+  ggplot(BTC_consumption_price2)+
+  geom_col(aes(x = DateFormatted, y = Monthly.consumption, color = "Energy"), fill = "white", width = 10, size = 2.75)+
+  geom_line(aes(x = DateFormatted, y = adjPrice, color = "Price/5000"), size = 2.75)+
+  theme_bw()+
+  scale_x_date(breaks = "1 months", labels=date_format("%Y-%m"), minor = "1 months", guide = guide_axis(n.dodge = 2))+
+  theme(axis.text.x = element_text(angle = 90, size = 15, vjust = 0.5), axis.text.y = element_text(size = 15), title = element_text(size = 30))+
+  labs(title = "Monthly consumption of energy by BTC mining", subtitle = "in relation to changes in BTC's price", x = "Year and Month", y = "Cumulative consumption [TWh]")+
+  scale_color_manual(values = c("darkgreen", "red"))+
+  theme(legend.title = element_text(color = "transparent"), legend.text = element_text(size = 25))
+
   
+
+  
+consAndPrice1
+
+  
+
+
+
 
 totalBitcoinConsumption %>%
   select(DateFormattedNew, Cumulative.consumption) %>% 
