@@ -75,6 +75,7 @@ final2 <- cbind(names2,values2)
 # ogarnianie do ggplota
 final2 <- final2 %>%
   mutate(energy = as.numeric(Rok_2020)) %>% 
+  mutate(energy = energy/0.0036) %>% #zamiana na TWh
   arrange(desc(energy)) 
 final2$Country <- factor(final2$Country, levels = final2$Country)
 
@@ -84,6 +85,6 @@ final3 %>%
   ggplot(aes(x = Country, y = energy)) +
   geom_col()+
   gghighlight(Country == "BTC 2019" | Country == "BTC 2020" | Country == "BTC 2021\n(przewidywany)")+
-  labs(title = "Porównanie energii uzytej przez panstwa i do bitcoina", subtitle = "Rok 2020", x = "Panstwa", y = "Energia w EJ (10^18 joula)")
+  labs(title = "Porównanie energii uzytej przez panstwa i do bitcoina", subtitle = "Rok 2020", x = "Panstwa", y = "Energia w TWh)")
 
 
