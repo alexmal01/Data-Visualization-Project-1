@@ -85,6 +85,6 @@ final3 %>%
   ggplot(aes(x = Country, y = energy)) +
   geom_col()+
   gghighlight(Country == "BTC 2019" | Country == "BTC 2020" | Country == "BTC 2021\n(przewidywany)")+
-  labs(title = "Porównanie energii uzytej przez panstwa i do bitcoina", subtitle = "Rok 2020", x = "Panstwa", y = "Energia w TWh)")
+  labs(title = "Porównanie energii uzytej przez panstwa i do bitcoina", subtitle = "Rok 2020", x = "Panstwa", y = "Energia w TWh")
 
 
